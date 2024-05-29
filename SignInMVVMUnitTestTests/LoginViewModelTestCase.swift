@@ -6,30 +6,56 @@
 //
 
 import XCTest
+@testable import SignInMVVMUnitTest
 
 final class LoginViewModelTestCase: XCTestCase {
-
+    var viewModel: LoginViewModel?
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        viewModel = LoginViewModel()
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        viewModel = nil
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testInvalidEmail(){
+        guard let viewModel else{
+            XCTFail("View Model is nil please check")
+            return
         }
+        
+        let type = viewModel.validateLogin("", password: "")
+        XCTAssertEqual(type, .emptyEmail, "Email should be empty")
+        XCTAssertEqual(type.rawValue, "Email cannot be empty")
+        
     }
-
+    
+    func testInvalidPassword(){
+        guard let viewModel else{
+            XCTFail("View Model is nil please check")
+            return
+        }
+        let type = viewModel.validateLogin("preet12@gmail.com", password: "")
+        XCTAssertEqual(type, .emptyPassword, "Password should be empty")
+        
+        //XCTAssertTrue(type == .emptyEmail, "Password should be empty")
+        //XCTAssertNotNil(<#T##expression: Any?##Any?#>, <#T##message: String##String#>)
+        //XCTAssertNotNil(<#T##expression: Any?##Any?#>, <#T##message: String##String#>)
+        
+        //Length of password validation
+        let type1 = viewModel.validateLogin("preet12@gmail.com", password: "1234")
+        XCTAssertEqual(type1, .lengthPassword, "Password should be more then 8 characters")
+    }
+    
+    func testLoginSuccess(){
+        guard let viewModel else{
+            XCTFail("View Model is nil please check")
+            return
+        }
+        let type2 = viewModel.validateLogin("preet12@gmail.com", password: "123456789")
+        XCTAssertEqual(type2, .success, "Login Success")
+    }
 }

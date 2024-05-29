@@ -24,15 +24,4 @@ class LoginViewController: UIViewController {
         showAlert(response.rawValue)
     }
 
-    
-    func showAlert(_ message: String){
-        let alertController = UIAlertController(
-            title: "Alert",
-            message: message,
-            preferredStyle: .alert
-        )
-        let ok  = UIAlertAction(title: "OKay", style: .default)
-        alertController.addAction(ok)
-        present(alertController, animated: true)
-    }
 }
